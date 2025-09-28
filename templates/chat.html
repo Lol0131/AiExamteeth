@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦷 AI Dental Assistant Chat</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
+            box-sizing: border-box;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            color: #4a4a4a;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .chat-container {
+            flex: 1;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease-in;
+        }
+        .user-message {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        .bot-message {
+            background: #e8f4fd;
+            color: #333;
+            margin-right: auto;
+            border: 1px solid #d0e7f7;
+        }
+        .message-time {
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .message-input:focus {
+            border-color: #667eea;
+        }
+        .send-button {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .typing-indicator {
+            display: none;
+            color: #666;
+            font-style: italic;
+            padding: 10px;
+        }
+        .typing-indicator.show {
+            display: block;
+        }
+        .typing-dots {
+            display: inline-block;
+            animation: typing 1.4s infinite;
+        }
+        .typing-dots:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-dots:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .nav-button {
+            background: #f0f0f0;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        .nav-button.active {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        .welcome-message {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦷 AI Dental Assistant</h1>
+        <p class="subtitle">Ask me anything about dental health, treatments, or your X-ray results!</p>
+        
+        <div class="nav-buttons">
+            <a href="/" class="nav-button">📸 X-ray Analysis</a>
+            <a href="/chat" class="nav-button active">💬 Chat Assistant</a>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    👋 Hi! I'm your AI dental assistant. I can help you understand:
+                    <br>• Your X-ray results and findings
+                    <br>• Dental treatments and procedures
+                    <br>• Oral health tips and prevention
+                    <br>• Insurance and cost questions
+                    <br><br>What would you like to know?
+                </div>
+            </div>
+            <div class="typing-indicator" id="typingIndicator">
+                AI Assistant is typing<span class="typing-dots">.</span><span class="typing-dots">.</span><span class="typing-dots">.</span>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="messageInput" class="message-input" placeholder="Ask me about your dental health..." autocomplete="off">
+            <button id="sendButton" class="send-button" title="Send message">
+                ➤
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+
+        // Add message to chat
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            messageDiv.innerHTML = `
+                <div>${content}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            typingIndicator.classList.add('show');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTyping() {
+            typingIndicator.classList.remove('show');
+        }
+
+        // Get AI response from Flask API
+        async function getAIResponse(userMessage) {
+            try {
+                const response = await fetch('/chat/api', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                
+                const data = await response.json();
+                return data.response;
+            } catch (error) {
+                console.error('Error getting AI response:', error);
+                return "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.";
+            }
+        }
+
+        // Send message
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, true);
+            messageInput.value = '';
+            sendButton.disabled = true;
+
+            // Show typing indicator
+            showTyping();
+
+            try {
+                // Get AI response from Flask API
+                const response = await getAIResponse(message);
+                hideTyping();
+                addMessage(response, false);
+            } catch (error) {
+                hideTyping();
+                addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment.", false);
+            } finally {
+                sendButton.disabled = false;
+                messageInput.focus();
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Focus input on load
+        messageInput.focus();
+
+        // Add some sample questions on load
+        setTimeout(() => {
+            addMessage("Here are some things you can ask me:", false);
+            addMessage("• 'What is a cavity?'", false);
+            addMessage("• 'How much does a filling cost?'", false);
+            addMessage("• 'What should I do about tooth pain?'", false);
+            addMessage("• 'Tell me about dental insurance'", false);
+            addMessage("• 'How can I prevent gum disease?'", false);
+        }, 2000);
+    </script>
+</body>
+</html>

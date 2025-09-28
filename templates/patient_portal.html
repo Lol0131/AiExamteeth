@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦷 Your Dental Analysis Results</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(139, 0, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(220, 20, 60, 0.2) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-20px) translateY(-10px); }
+            50% { transform: translateX(20px) translateY(10px); }
+            75% { transform: translateX(-10px) translateY(20px); }
+        }
+
+        /* Floating particles animation */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.2), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.4), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.2), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: float 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-10px) translateX(5px); }
+            66% { transform: translateY(5px) translateX(-5px); }
+            100% { transform: translateY(0px) translateX(0px); }
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .container:hover::before {
+            left: 100%;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            color: #4a4a4a;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        
+        .results-section {
+            margin-bottom: 30px;
+        }
+        
+        .results-title {
+            font-size: 1.5em;
+            color: #4a4a4a;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e7ff;
+            padding-bottom: 10px;
+        }
+        
+        .findings-list {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .finding-item {
+            background: white;
+            border: 1px solid #e0e7ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .finding-info {
+            flex: 1;
+        }
+        
+        .finding-confidence {
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .chat-section {
+            background: #f8f9ff;
+            border: 2px solid #e0e7ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .chat-container {
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            background: white;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+            position: relative;
+            overflow: hidden;
+            animation: slideInMessage 0.4s ease-out;
+        }
+
+        .message::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .message:hover::before {
+            left: 100%;
+        }
+
+        @keyframes slideInMessage {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .user-message {
+            background: linear-gradient(45deg, #8B0000 0%, #DC143C 100%);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .bot-message {
+            background: #e8f4fd;
+            color: #333;
+            margin-right: auto;
+            border: 1px solid #d0e7f7;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .message-input:focus {
+            border-color: #8B0000;
+        }
+        
+        .send-button {
+            background: linear-gradient(45deg, #8B0000 0%, #DC143C 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .send-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .send-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                0 8px 25px rgba(139, 0, 0, 0.4),
+                0 0 20px rgba(220, 20, 60, 0.3);
+        }
+
+        .send-button:active {
+            transform: scale(1.05) rotate(2deg);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .typing-indicator {
+            display: none;
+            color: #666;
+            font-style: italic;
+            padding: 10px;
+            background: linear-gradient(45deg, #f0f0f0, #e8e8e8);
+            border-radius: 18px;
+            margin-bottom: 15px;
+            max-width: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .typing-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: typingShimmer 1.5s infinite;
+        }
+
+        @keyframes typingShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .typing-indicator.show {
+            display: block;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        
+        .no-findings {
+            text-align: center;
+            color: #28a745;
+            font-size: 1.2em;
+            padding: 20px;
+            background: #d4edda;
+            border-radius: 10px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .patient-info {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: #4a4a4a;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .pricing-item {
+            background: #f8f9ff;
+            border: 1px solid #e0e7ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .pricing-header {
+            font-weight: 600;
+            color: #4a4a4a;
+            margin-bottom: 5px;
+        }
+
+        .pricing-cost {
+            font-size: 1.2em;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .doctor-item {
+            background: #f8f9ff;
+            border: 1px solid #e0e7ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .doctor-name {
+            font-weight: 600;
+            color: #4a4a4a;
+            margin-bottom: 5px;
+        }
+
+        .doctor-specialty {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .doctor-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doctor-price {
+            font-size: 1.1em;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .doctor-rating {
+            color: #ffc107;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦷 Your Dental Analysis Results</h1>
+        <p class="subtitle">Personalized AI analysis for {{ patient_name }}{% if patient_age %} (Age: {{ patient_age }}){% endif %}</p>
+        
+        <!-- Patient Information Section -->
+        <div class="results-section">
+            <div class="results-title">👤 Your Information</div>
+            <div class="patient-info">
+                <div class="info-item"><strong>Name:</strong> {{ patient_name }}</div>
+                {% if patient_age %}<div class="info-item"><strong>Age:</strong> {{ patient_age }}</div>{% endif %}
+                {% if patient_phone %}<div class="info-item"><strong>Phone:</strong> {{ patient_phone }}</div>{% endif %}
+                {% if insurance_provider %}<div class="info-item"><strong>Insurance:</strong> {{ insurance_provider.replace('_', ' ').title() }}</div>{% endif %}
+                {% if patient_history %}<div class="info-item"><strong>Medical History:</strong> {{ patient_history }}</div>{% endif %}
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="results-title">📊 Analysis Results</div>
+            {% if findings %}
+                <div class="findings-list">
+                    {% for finding in findings %}
+                    <div class="finding-item">
+                        <div class="finding-info">
+                            <strong>Tooth #{{ finding.tooth_id }}</strong> - {{ finding.region }} region
+                        </div>
+                        <div class="finding-confidence">
+                            {{ "%.1f"|format(finding.conf * 100) }}% confidence
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-findings">
+                    ✅ Great news! No cavities or dental issues were detected in your X-ray.
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="chat-section">
+            <h3>💬 Ask Our AI About Your Results</h3>
+            <p>Chat with our AI assistant to learn more about your specific findings and get personalized recommendations.</p>
+            
+            <div class="chat-container" id="chatContainer">
+                <!-- Welcome message will be added dynamically by JavaScript -->
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                AI Assistant is typing...
+            </div>
+            
+            <div class="input-container">
+                <input type="text" id="messageInput" class="message-input" placeholder="Ask about your results..." autocomplete="off">
+                <button id="sendButton" class="send-button" title="Send message">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insurance Consent Modal -->
+    <div id="insuranceModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🏥 Insurance Information Consent</h3>
+            <p>To provide you with accurate pricing estimates, I need to access your insurance information. This will help me calculate your out-of-pocket costs.</p>
+            <div class="form-group">
+                <label>Insurance Provider:</label>
+                <select id="insuranceProvider">
+                    <option value="">Select Provider</option>
+                    <option value="blue_cross">Blue Cross Blue Shield</option>
+                    <option value="aetna">Aetna</option>
+                    <option value="cigna">Cigna</option>
+                    <option value="humana">Humana</option>
+                    <option value="kaiser">Kaiser Permanente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Plan Type:</label>
+                <select id="planType">
+                    <option value="">Select Plan</option>
+                    <option value="premium">Premium (90% coverage)</option>
+                    <option value="standard">Standard (80% coverage)</option>
+                    <option value="basic">Basic (70% coverage)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Annual Deductible Remaining:</label>
+                <input type="number" id="deductibleRemaining" placeholder="e.g., 500" value="500">
+            </div>
+            <div class="modal-buttons">
+                <button id="consentYes" class="btn-primary">✅ Yes, Calculate My Costs</button>
+                <button id="consentNo" class="btn-secondary">❌ No, Skip Pricing</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Results Modal -->
+    <div id="pricingModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>💰 Treatment Cost Estimate</h3>
+            <div id="pricingResults"></div>
+            <div class="modal-buttons">
+                <button id="acceptPrice" class="btn-primary">✅ Accept This Price</button>
+                <button id="findAlternatives" class="btn-secondary">🔍 Find Other Doctors</button>
+                <button id="closePricing" class="btn-secondary">❌ Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Network Modal -->
+    <div id="doctorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🏥 Doctor Network - Competitive Pricing</h3>
+            <div id="doctorResults"></div>
+            <div class="modal-buttons">
+                <button id="closeDoctor" class="btn-secondary">❌ Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Add message to chat
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.innerHTML = content;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            typingIndicator.classList.add('show');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTyping() {
+            typingIndicator.classList.remove('show');
+        }
+
+        // Get AI response from Flask API
+        async function getAIResponse(userMessage) {
+            try {
+                const response = await fetch('/chat/api', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        message: userMessage,
+                        patient_name: "{{ patient_name }}",
+                        patient_age: "{{ patient_age }}",
+                        patient_history: "{{ patient_history }}",
+                        insurance_provider: "{{ insurance_provider }}",
+                        findings: {{ findings | tojson }}
+                    })
+                });
+                
+                const data = await response.json();
+                return data.response;
+            } catch (error) {
+                console.error('Error getting AI response:', error);
+                return "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.";
+            }
+        }
+
+        // Check if message is about pricing/costs
+        function isPricingMessage(message) {
+            const pricingKeywords = ['cost', 'price', 'expensive', 'cheap', 'afford', 'insurance', 'payment', 'bill', 'money', 'budget', 'treatment cost', 'how much'];
+            return pricingKeywords.some(keyword => message.toLowerCase().includes(keyword));
+        }
+
+        // Show insurance consent modal
+        function showInsuranceConsent() {
+            document.getElementById('insuranceModal').style.display = 'flex';
+        }
+
+        // Hide insurance consent modal
+        function hideInsuranceConsent() {
+            document.getElementById('insuranceModal').style.display = 'none';
+        }
+
+        // Calculate pricing based on insurance and actual findings
+        function calculatePricing() {
+            const provider = document.getElementById('insuranceProvider').value;
+            const planType = document.getElementById('planType').value;
+            const deductible = parseInt(document.getElementById('deductibleRemaining').value) || 0;
+
+            if (!provider || !planType) {
+                alert('Please fill in all insurance information');
+                return;
+            }
+
+            // Get actual findings from the page
+            const findings = {{ findings | tojson }};
+            
+            // If no findings, show a different message
+            if (!findings || findings.length === 0) {
+                showNoFindingsMessage();
+                hideInsuranceConsent();
+                return;
+            }
+
+            // Treatment recommendations based on cavity severity
+            const treatmentRecommendations = {
+                'filling': { cost: 150, description: 'Simple filling for minor cavities' },
+                'crown': { cost: 1200, description: 'Crown for moderate to severe cavities' },
+                'root_canal': { cost: 800, description: 'Root canal for infected teeth' },
+                'extraction': { cost: 200, description: 'Tooth extraction for severely damaged teeth' }
+            };
+
+            const coverageRates = {
+                'premium': 0.9,
+                'standard': 0.8,
+                'basic': 0.7
+            };
+
+            const coverage = coverageRates[planType];
+            const results = [];
+
+            // Analyze findings and recommend treatments
+            findings.forEach((finding, index) => {
+                const confidence = finding.conf || 0.5;
+                const toothId = finding.tooth_id;
+                
+                // Determine treatment based on confidence and tooth position
+                let recommendedTreatment;
+                if (confidence > 0.8) {
+                    // High confidence - likely needs crown or root canal
+                    recommendedTreatment = Math.random() > 0.5 ? 'crown' : 'root_canal';
+                } else if (confidence > 0.6) {
+                    // Medium confidence - likely needs filling
+                    recommendedTreatment = 'filling';
+                } else {
+                    // Low confidence - might need extraction
+                    recommendedTreatment = 'extraction';
+                }
+
+                const treatment = treatmentRecommendations[recommendedTreatment];
+                const insuranceCovers = Math.max(0, treatment.cost * coverage);
+                const patientPays = Math.max(deductible, treatment.cost - insuranceCovers);
+                
+                results.push({
+                    treatment: `TOOTH #${toothId} - ${recommendedTreatment.replace('_', ' ').toUpperCase()}`,
+                    description: treatment.description,
+                    totalCost: treatment.cost,
+                    insuranceCovers: insuranceCovers,
+                    patientPays: patientPays,
+                    confidence: confidence,
+                    toothId: toothId
+                });
+            });
+
+            // Display pricing results
+            showPricingResults(results);
+            hideInsuranceConsent();
+        }
+
+        // Show message when no findings are detected
+        function showNoFindingsMessage() {
+            const pricingDiv = document.getElementById('pricingResults');
+            pricingDiv.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h3>🎉 Great News!</h3>
+                    <p>No cavities were detected in your X-ray analysis.</p>
+                    <p>Your teeth look healthy! Keep up the good oral hygiene.</p>
+                    <button onclick="document.getElementById('pricingModal').style.display='none'" 
+                            style="background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Close
+                    </button>
+                </div>
+            `;
+            document.getElementById('pricingModal').style.display = 'flex';
+        }
+
+        // Show pricing results modal
+        function showPricingResults(results) {
+            const pricingDiv = document.getElementById('pricingResults');
+            pricingDiv.innerHTML = '';
+
+            // Add header
+            const headerDiv = document.createElement('div');
+            headerDiv.style.cssText = 'text-align: center; margin-bottom: 20px; padding: 15px; background: #f0f8ff; border-radius: 10px;';
+            headerDiv.innerHTML = `
+                <h3 style="margin: 0; color: #2c5aa0;">💰 Treatment Cost Estimate</h3>
+                <p style="margin: 5px 0 0 0; color: #666;">Based on your X-ray analysis findings</p>
+            `;
+            pricingDiv.appendChild(headerDiv);
+
+            // Calculate totals
+            let totalCost = 0;
+            let totalInsuranceCovers = 0;
+            let totalPatientPays = 0;
+
+            results.forEach(result => {
+                const treatmentDiv = document.createElement('div');
+                treatmentDiv.className = 'treatment-item';
+                treatmentDiv.style.cssText = 'background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #007bff;';
+                
+                const confidenceColor = result.confidence > 0.8 ? '#dc3545' : result.confidence > 0.6 ? '#ffc107' : '#28a745';
+                const confidenceText = result.confidence > 0.8 ? 'High' : result.confidence > 0.6 ? 'Medium' : 'Low';
+                
+                treatmentDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="color: #2c5aa0; font-size: 1.1em;">${result.treatment}</strong>
+                        <span style="background: ${confidenceColor}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;">
+                            ${confidenceText} Confidence
+                        </span>
+                    </div>
+                    <div style="color: #666; margin-bottom: 10px; font-style: italic;">${result.description}</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center;">
+                        <div style="background: white; padding: 8px; border-radius: 5px;">
+                            <div style="font-size: 0.9em; color: #666;">Total Cost</div>
+                            <div style="font-weight: bold; color: #333;">$${result.totalCost}</div>
+                        </div>
+                        <div style="background: white; padding: 8px; border-radius: 5px;">
+                            <div style="font-size: 0.9em; color: #666;">Insurance Covers</div>
+                            <div style="font-weight: bold; color: #28a745;">$${Math.round(result.insuranceCovers)}</div>
+                        </div>
+                        <div style="background: #e8f5e8; padding: 8px; border-radius: 5px; border: 2px solid #28a745;">
+                            <div style="font-size: 0.9em; color: #666;">You Pay</div>
+                            <div style="font-weight: bold; color: #28a745; font-size: 1.1em;">$${Math.round(result.patientPays)}</div>
+                        </div>
+                    </div>
+                `;
+                pricingDiv.appendChild(treatmentDiv);
+                
+                // Add to totals
+                totalCost += result.totalCost;
+                totalInsuranceCovers += result.insuranceCovers;
+                totalPatientPays += result.patientPays;
+            });
+
+            // Add totals section
+            const totalsDiv = document.createElement('div');
+            totalsDiv.style.cssText = 'background: #2c5aa0; color: white; padding: 20px; border-radius: 10px; margin-top: 20px;';
+            totalsDiv.innerHTML = `
+                <h4 style="margin: 0 0 15px 0; text-align: center;">📊 Total Treatment Costs</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; text-align: center;">
+                    <div>
+                        <div style="font-size: 0.9em; opacity: 0.8;">Total Cost</div>
+                        <div style="font-size: 1.2em; font-weight: bold;">$${totalCost}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; opacity: 0.8;">Insurance Covers</div>
+                        <div style="font-size: 1.2em; font-weight: bold;">$${Math.round(totalInsuranceCovers)}</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px;">
+                        <div style="font-size: 0.9em; opacity: 0.8;">You Pay</div>
+                        <div style="font-size: 1.4em; font-weight: bold;">$${Math.round(totalPatientPays)}</div>
+                    </div>
+                </div>
+            `;
+            pricingDiv.appendChild(totalsDiv);
+
+            document.getElementById('pricingModal').style.display = 'flex';
+        }
+
+        // Show doctor network with competitive pricing and appointment booking
+        function showDoctorNetwork() {
+            const doctorDiv = document.getElementById('doctorResults');
+            doctorDiv.innerHTML = '';
+
+            // Fake doctor data with appointment slots
+            const doctors = [
+                {
+                    name: "Dr. Sarah Johnson",
+                    specialty: "General Dentistry",
+                    rating: "⭐⭐⭐⭐⭐",
+                    price: "$1,200",
+                    location: "Downtown Clinic",
+                    distance: "2.3 miles",
+                    appointments: [
+                        { date: "Tomorrow", time: "2:00 PM", type: "Consultation" },
+                        { date: "Friday", time: "10:30 AM", type: "Treatment" },
+                        { date: "Next Monday", time: "3:15 PM", type: "Consultation" }
+                    ]
+                },
+                {
+                    name: "Dr. Michael Chen",
+                    specialty: "Restorative Dentistry",
+                    rating: "⭐⭐⭐⭐",
+                    price: "$1,100",
+                    location: "Westside Dental",
+                    distance: "3.1 miles",
+                    appointments: [
+                        { date: "Today", time: "4:00 PM", type: "Emergency" },
+                        { date: "Thursday", time: "11:00 AM", type: "Consultation" },
+                        { date: "Next Tuesday", time: "2:30 PM", type: "Treatment" }
+                    ]
+                },
+                {
+                    name: "Dr. Emily Rodriguez",
+                    specialty: "Cosmetic Dentistry",
+                    rating: "⭐⭐⭐⭐⭐",
+                    price: "$1,350",
+                    location: "Smile Center",
+                    distance: "1.8 miles",
+                    appointments: [
+                        { date: "Wednesday", time: "9:00 AM", type: "Consultation" },
+                        { date: "Friday", time: "1:45 PM", type: "Treatment" },
+                        { date: "Next Wednesday", time: "10:15 AM", type: "Consultation" }
+                    ]
+                },
+                {
+                    name: "Dr. David Park",
+                    specialty: "Family Dentistry",
+                    rating: "⭐⭐⭐⭐",
+                    price: "$950",
+                    location: "Community Dental",
+                    distance: "4.2 miles",
+                    appointments: [
+                        { date: "Thursday", time: "8:30 AM", type: "Consultation" },
+                        { date: "Next Monday", time: "2:00 PM", type: "Treatment" },
+                        { date: "Next Friday", time: "11:30 AM", type: "Consultation" }
+                    ]
+                }
+            ];
+
+            doctors.forEach(doctor => {
+                const doctorCard = document.createElement('div');
+                doctorCard.className = 'doctor-card';
+                doctorCard.style.cssText = 'background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #007bff;';
+                
+                doctorCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4 style="margin: 0; color: #2c5aa0;">${doctor.name}</h4>
+                        <div style="color: #ffc107; font-weight: bold;">${doctor.rating}</div>
+                    </div>
+                    <div style="color: #666; margin-bottom: 10px;">${doctor.specialty} • ${doctor.location}</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <div style="background: white; padding: 8px; border-radius: 5px; text-align: center;">
+                            <div style="font-size: 0.9em; color: #666;">Your Cost</div>
+                            <div style="font-weight: bold; color: #28a745; font-size: 1.1em;">${doctor.price}</div>
+                        </div>
+                        <div style="background: white; padding: 8px; border-radius: 5px; text-align: center;">
+                            <div style="font-size: 0.9em; color: #666;">Distance</div>
+                            <div style="font-weight: bold; color: #333;">${doctor.distance}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                        <h5 style="margin: 0 0 10px 0; color: #2c5aa0;">📅 Available Appointments:</h5>
+                        <div style="display: grid; gap: 8px;">
+                            ${doctor.appointments.map(apt => `
+                                <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; border-radius: 5px; border: 1px solid #e0e7ff;">
+                                    <div>
+                                        <div style="font-weight: bold; color: #333;">${apt.date} at ${apt.time}</div>
+                                        <div style="font-size: 0.9em; color: #666;">${apt.type}</div>
+                                    </div>
+                                    <button onclick="bookAppointment('${doctor.name}', '${apt.date}', '${apt.time}', '${apt.type}', '${doctor.price}')" 
+                                            style="background: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9em;">
+                                        Book Now
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                doctorDiv.appendChild(doctorCard);
+            });
+
+            document.getElementById('pricingModal').style.display = 'none';
+            document.getElementById('doctorModal').style.display = 'flex';
+        }
+
+        // Book appointment function
+        function bookAppointment(doctorName, date, time, type, price) {
+            // Show booking confirmation
+            const confirmation = `
+                <div style="text-align: center; padding: 20px; background: #f0f8ff; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="color: #2c5aa0; margin-bottom: 15px;">📅 Appointment Booked!</h3>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 15px 0; border: 2px solid #28a745;">
+                        <div style="font-size: 1.1em; margin-bottom: 10px;"><strong>Doctor:</strong> ${doctorName}</div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;"><strong>Date:</strong> ${date}</div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;"><strong>Time:</strong> ${time}</div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;"><strong>Type:</strong> ${type}</div>
+                        <div style="font-size: 1.1em; margin-bottom: 10px;"><strong>Cost:</strong> ${price}</div>
+                    </div>
+                    <p style="color: #666; margin: 15px 0;">✅ You'll receive a confirmation text message shortly.</p>
+                    <p style="color: #666; margin: 15px 0;">📱 The doctor's office will contact you to confirm details.</p>
+                    <div style="margin-top: 20px;">
+                        <button onclick="document.getElementById('doctorModal').style.display='none'; addMessage('Great! I\\'ve booked your appointment with ${doctorName} for ${date} at ${time}. The cost will be ${price}. You\\'ll receive a confirmation text shortly.', false);" 
+                                style="background: #28a745; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; margin: 5px; font-size: 1em;">
+                            ✅ Confirm Booking
+                        </button>
+                        <button onclick="document.getElementById('doctorModal').style.display='none';" 
+                                style="background: #6c757d; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; margin: 5px; font-size: 1em;">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('doctorResults').innerHTML = confirmation;
+        }
+
+        // Enhanced AI response handler
+        async function handleAIResponse(userMessage) {
+            if (isPricingMessage(userMessage)) {
+                // Show insurance consent for pricing questions
+                showInsuranceConsent();
+                return "I'd be happy to help you with pricing information! Please provide your insurance details so I can calculate your out-of-pocket costs accurately.";
+            }
+            
+            // Regular AI response
+            return await getAIResponse(userMessage);
+        }
+
+        // Override the original getAIResponse to check for pricing first
+        const originalGetAIResponse = getAIResponse;
+        getAIResponse = async function(userMessage) {
+            if (isPricingMessage(userMessage)) {
+                showInsuranceConsent();
+                return "I'd be happy to help you with pricing information! Please provide your insurance details so I can calculate your out-of-pocket costs accurately.";
+            }
+            return await originalGetAIResponse(userMessage);
+        };
+
+        // Send message
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, true);
+            messageInput.value = '';
+            sendButton.disabled = true;
+
+            // Show typing indicator
+            showTyping();
+
+            try {
+                // Get AI response (with pricing detection)
+                const response = await getAIResponse(message);
+                hideTyping();
+                addMessage(response, false);
+            } catch (error) {
+                hideTyping();
+                addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment.", false);
+            } finally {
+                sendButton.disabled = false;
+                messageInput.focus();
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Insurance consent modal events
+        document.getElementById('consentYes').addEventListener('click', calculatePricing);
+        document.getElementById('consentNo').addEventListener('click', () => {
+            hideInsuranceConsent();
+            addMessage("No problem! You can always ask about pricing later if you change your mind.", false);
+        });
+
+        // Pricing modal events
+        document.getElementById('acceptPrice').addEventListener('click', () => {
+            document.getElementById('pricingModal').style.display = 'none';
+            addMessage("Great! I've noted your acceptance of this pricing. Would you like me to help you schedule an appointment?", false);
+        });
+
+        document.getElementById('findAlternatives').addEventListener('click', showDoctorNetwork);
+        document.getElementById('closePricing').addEventListener('click', () => {
+            document.getElementById('pricingModal').style.display = 'none';
+        });
+
+        // Doctor network modal events
+        document.getElementById('closeDoctor').addEventListener('click', () => {
+            document.getElementById('doctorModal').style.display = 'none';
+            addMessage("I've shown you several alternative doctors with competitive pricing. Would you like me to help you contact any of them?", false);
+        });
+
+        // Show initial welcome message and visit summary
+        function showInitialWelcome() {
+            const patientName = "{{ patient_name }}";
+            const findings = {{ findings | tojson }};
+            const patientAge = "{{ patient_age }}";
+            const insuranceProvider = "{{ insurance_provider }}";
+            
+            // Create personalized greeting
+            let greeting = `Hello ${patientName}, welcome to your dental analysis portal.`;
+            
+            // Add visit summary
+            let summary = "\n\n**Clinical Analysis Summary:**\n";
+            
+            if (findings && findings.length > 0) {
+                summary += `AI analysis has identified ${findings.length} potential dental issue${findings.length > 1 ? 's' : ''} requiring attention:\n`;
+                findings.forEach(finding => {
+                    const confidence = finding.conf || 0.5;
+                    const confidenceText = confidence > 0.8 ? 'High' : confidence > 0.6 ? 'Medium' : 'Low';
+                    summary += `- Tooth #${finding.tooth_id} (${confidenceText} confidence: ${(confidence * 100).toFixed(0)}%)\n`;
+                });
+                summary += `\n**Recommended Actions:** I can assist you with understanding your results, discussing treatment options, and providing cost estimates based on your insurance coverage.`;
+            } else {
+                summary += `No cavities or dental issues were detected in your X-ray analysis.\n`;
+                summary += `Your dental health appears to be in good condition. Continue maintaining proper oral hygiene practices.\n`;
+                summary += `\n**Next Steps:** I'm available to answer questions about your dental health and preventive care recommendations.`;
+            }
+            
+            // Add patient context if available
+            if (patientAge) {
+                summary += `\n\n**Patient Information:** Age ${patientAge}`;
+            }
+            if (insuranceProvider && insuranceProvider !== 'none') {
+                summary += `, Insurance Provider: ${insuranceProvider.replace('_', ' ').title()}`;
+            }
+            
+            summary += `\n\n**How may I assist you today?** You can inquire about:\n`;
+            summary += `• Treatment options and associated costs\n`;
+            summary += `• Insurance coverage and benefits\n`;
+            summary += `• Alternative provider options\n`;
+            summary += `• General dental health information`;
+            
+            // Add the welcome message to chat
+            addMessage(greeting + summary, false);
+        }
+        
+        // Show initial welcome message
+        showInitialWelcome();
+        
+        // Focus input on load
+        messageInput.focus();
+    </script>
+</body>
+</html>

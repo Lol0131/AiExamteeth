@@ -1,0 +1,6 @@
+names:
+- caries
+nc: 1
+path: ./datasets/sample
+train: images/train
+val: images/val

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> AI Dental Exam - Doctor Interface</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #4a4a4a;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        
+        .upload-area {
+            border: 3px dashed hsl(133, 47%, 42%);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9ff;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            background: #e8f0ff;
+            border-color: hsl(133, 47%, 42%)
+        }
+        
+        .upload-area.dragover {
+            background: #e8f0ff;
+            border-color: hsl(133, 47%, 42%);
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 3em;
+            color: hsl(133, 47%, 42%);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #4a4a4a;
+            margin-bottom: 10px;
+        }
+        
+        .upload-subtext {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .analyze-btn {
+            background: linear-gradient(45deg, #8B0000 0%, #DC143C 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .analyze-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Patient Information Form */
+        .patient-form {
+            background: #f8f9ff;
+            border: 2px solid #e0e7ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .patient-form h3 {
+            margin: 0 0 20px 0;
+            color: #4a4a4a;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: hsl(133, 47%, 42%);
+        }
+        
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: normal;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.2);
+            width: auto;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .overlay-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .report-text {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid hsl(133, 47%, 42%);
+            font-family: monospace;
+            white-space: pre-line;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid hsl(133, 47%, 42%);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .patient-portal-link {
+            background: linear-gradient(45deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .patient-portal-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .email-status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+        
+        .email-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .email-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .email-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦷 AI Dental Exam - Doctor Interface</h1>
+        <p class="subtitle">Upload X-ray, input patient information, and generate personalized results</p>
+        
+        <!-- File Upload Area -->
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Click to upload X-ray or drag & drop</div>
+            <div class="upload-subtext">Supports JPG, PNG, and other image formats</div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </div>
+        
+        <!-- Patient Information Form -->
+        <div class="patient-form" id="patientForm" style="display: none;">
+            <h3>Patient Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patientName">Patient Name:</label>
+                    <input type="text" id="patientName" placeholder="Enter patient name" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientAge">Age:</label>
+                    <input type="number" id="patientAge" placeholder="Age" min="1" max="120">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patientEmail">Email Address:</label>
+                    <input type="email" id="patientEmail" placeholder="patient@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="patientPhone">Phone Number:</label>
+                    <input type="tel" id="patientPhone" placeholder="(555) 123-4567">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="patientHistory">Medical History:</label>
+                <textarea id="patientHistory" placeholder="Any relevant medical history, allergies, or concerns..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="insuranceProvider">Insurance Provider:</label>
+                <select id="insuranceProvider">
+                    <option value="">Select Insurance Provider</option>
+                    <option value="blue_cross">Blue Cross Blue Shield</option>
+                    <option value="aetna">Aetna</option>
+                    <option value="cigna">Cigna</option>
+                    <option value="humana">Humana</option>
+                    <option value="kaiser">Kaiser Permanente</option>
+                    <option value="none">No Insurance</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="sendEmail">
+                    Send analysis results via email
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="sendSMS">
+                    Send analysis results via SMS (text message)
+                </label>
+            </div>
+        </div>
+        
+        <button class="analyze-btn" onclick="analyzeImage()" disabled>
+             Analyze X-ray
+        </button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>AI is analyzing the X-ray...</div>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="result-section">
+                <div class="result-title"> Analysis Results</div>
+                <img id="overlayImage" class="overlay-image" alt="Detection overlay">
+            </div>
+            
+            <div class="result-section">
+                <div class="result-title"> AI Report</div>
+                <div id="reportText" class="report-text"></div>
+            </div>
+            
+            <div class="result-section">
+                <div class="result-title"> Patient Portal</div>
+                <div id="patientPortalSection">
+                    <p>Patient can access their personalized results at:</p>
+                    <a id="patientPortalLink" class="patient-portal-link" href="#" target="_blank">
+                         View Patient Portal
+                    </a>
+                </div>
+            </div>
+            
+            <div id="emailStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+        
+        // File input handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                document.querySelector('.analyze-btn').disabled = false;
+                document.querySelector('.upload-text').textContent = `Selected: ${file.name}`;
+                document.querySelector('.upload-subtext').textContent = 'Click "Analyze X-ray" to process';
+                // Show patient form when image is selected
+                document.getElementById('patientForm').style.display = 'block';
+            }
+        });
+        
+        // Drag and drop handling
+        const uploadArea = document.querySelector('.upload-area');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                selectedFile = files[0];
+                document.getElementById('fileInput').files = files;
+                document.querySelector('.analyze-btn').disabled = false;
+                document.querySelector('.upload-text').textContent = `Selected: ${files[0].name}`;
+                document.querySelector('.upload-subtext').textContent = 'Click "Analyze X-ray" to process';
+                // Show patient form when image is selected
+                document.getElementById('patientForm').style.display = 'block';
+            }
+        });
+        
+        async function analyzeImage() {
+            if (!selectedFile) {
+                alert('Please select an image first');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.querySelector('.analyze-btn').disabled = true;
+            
+            try {
+                const formData = new FormData();
+                formData.append('image', selectedFile);
+                
+                // Add patient information
+                const patientName = document.getElementById('patientName').value || 'Patient';
+                const patientAge = document.getElementById('patientAge').value || '';
+                const patientEmail = document.getElementById('patientEmail').value;
+                const patientPhone = document.getElementById('patientPhone').value;
+                const patientHistory = document.getElementById('patientHistory').value;
+                const insuranceProvider = document.getElementById('insuranceProvider').value;
+                const sendEmail = document.getElementById('sendEmail').checked;
+                const sendSMS = document.getElementById('sendSMS').checked;
+                
+                formData.append('patient_name', patientName);
+                formData.append('patient_age', patientAge);
+                formData.append('patient_email', patientEmail);
+                formData.append('patient_phone', patientPhone);
+                formData.append('patient_history', patientHistory);
+                formData.append('insurance_provider', insuranceProvider);
+                formData.append('send_email', sendEmail);
+                formData.append('send_sms', sendSMS);
+                
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show results
+                    document.getElementById('overlayImage').src = 'data:image/png;base64,' + result.overlay_image;
+                    document.getElementById('reportText').textContent = result.report;
+                    
+                    // Show patient portal link
+                    if (result.patient_portal_link) {
+                        const portalLink = document.getElementById('patientPortalLink');
+                        portalLink.href = result.patient_portal_link;
+                        portalLink.textContent = `🦷 View ${patientName}'s Portal`;
+                    }
+                    
+                    // Show communication status
+                    const emailStatus = document.getElementById('emailStatus');
+                    let statusMessages = [];
+                    
+                    // Email status
+                    if (result.email_sent) {
+                        statusMessages.push(`✅ Email sent successfully to ${result.patient_name}!`);
+                    } else if (result.email_status === 'not_configured') {
+                        statusMessages.push(`⚠️ Email not sent - Email credentials not configured.`);
+                    }
+                    
+                    // SMS status
+                    if (result.sms_sent) {
+                        statusMessages.push(`📱 SMS sent successfully to ${result.patient_name}!`);
+                    } else if (result.sms_status === 'not_configured') {
+                        statusMessages.push(`⚠️ SMS not sent - SMS credentials not configured.`);
+                    }
+                    
+                    // Portal link
+                    if (result.patient_portal_link) {
+                        statusMessages.push(`🔗 <strong>Patient portal link:</strong> <a href="${result.patient_portal_link}" target="_blank" style="color: #007bff; text-decoration: underline;">${result.patient_portal_link}</a>`);
+                        statusMessages.push(`<small>Copy this link to share with the patient</small>`);
+                    }
+                    
+                    // Configuration help
+                    if (result.email_status === 'not_configured' || result.sms_status === 'not_configured') {
+                        statusMessages.push(`<small>To enable notifications: Add credentials to .env file</small>`);
+                    }
+                    
+                    if (statusMessages.length > 0) {
+                        emailStatus.innerHTML = `<div class="email-info">${statusMessages.join('<br>')}</div>`;
+                    }
+                    
+                    document.getElementById('results').style.display = 'block';
+                } else {
+                    // Show error
+                    document.getElementById('results').innerHTML = `
+                        <div class="error">
+                            <strong>Error:</strong> ${result.error}
+                        </div>
+                    `;
+                    document.getElementById('results').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> Failed to analyze image: ${error.message}
+                    </div>
+                `;
+                document.getElementById('results').style.display = 'block';
+            } finally {
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('.analyze-btn').disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
