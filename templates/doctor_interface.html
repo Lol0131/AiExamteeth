@@ -21,7 +21,9 @@
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            animation: gentleFloat 8s ease-in-out infinite;
         }
+
         
         h1 {
             color: #4a4a4a;
@@ -239,6 +241,16 @@
             font-weight: 600;
             margin: 10px 0;
             transition: all 0.3s ease;
+            animation: buttonFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes buttonFloat {
+            0%, 100% { 
+                transform: translateY(0px); 
+            }
+            50% { 
+                transform: translateY(-5px); 
+            }
         }
         
         .patient-portal-link:hover {
@@ -459,7 +471,7 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    // Show results
+                    // Show results without overlay boxes
                     document.getElementById('overlayImage').src = 'data:image/png;base64,' + result.overlay_image;
                     document.getElementById('reportText').textContent = result.report;
                     

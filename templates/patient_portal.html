@@ -114,6 +114,30 @@
                 transform: translateY(0);
             }
         }
+
+        @keyframes gentleFloat {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+            }
+            25% { 
+                transform: translateY(-3px) rotate(0.5deg); 
+            }
+            50% { 
+                transform: translateY(-6px) rotate(0deg); 
+            }
+            75% { 
+                transform: translateY(-3px) rotate(-0.5deg); 
+            }
+        }
+
+        @keyframes subtleFloat {
+            0%, 100% { 
+                transform: translateY(0px); 
+            }
+            50% { 
+                transform: translateY(-1px); 
+            }
+        }
         
         h1 {
             color: #4a4a4a;
@@ -393,10 +417,10 @@
         .modal-content {
             background: white;
             border-radius: 15px;
-            padding: 30px;
-            max-width: 500px;
+            padding: 20px;
+            max-width: 450px;
             width: 90%;
-            max-height: 80vh;
+            max-height: 60vh;
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
@@ -408,7 +432,7 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
@@ -421,10 +445,10 @@
         .form-group select,
         .form-group input {
             width: 100%;
-            padding: 12px;
+            padding: 8px;
             border: 2px solid #ddd;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             box-sizing: border-box;
         }
 
@@ -739,16 +763,16 @@
 
             // Treatment recommendations based on cavity severity
             const treatmentRecommendations = {
-                'filling': { cost: 150, description: 'Simple filling for minor cavities' },
-                'crown': { cost: 1200, description: 'Crown for moderate to severe cavities' },
-                'root_canal': { cost: 800, description: 'Root canal for infected teeth' },
-                'extraction': { cost: 200, description: 'Tooth extraction for severely damaged teeth' }
+                'filling': { cost: 120, description: 'Simple filling for minor cavities' },
+                'crown': { cost: 450, description: 'Crown for moderate to severe cavities' },
+                'root_canal': { cost: 350, description: 'Root canal for infected teeth' },
+                'extraction': { cost: 150, description: 'Tooth extraction for severely damaged teeth' }
             };
 
             const coverageRates = {
-                'premium': 0.9,
-                'standard': 0.8,
-                'basic': 0.7
+                'premium': 0.85,
+                'standard': 0.75,
+                'basic': 0.65
             };
 
             const coverage = coverageRates[planType];
@@ -897,13 +921,13 @@
             const doctorDiv = document.getElementById('doctorResults');
             doctorDiv.innerHTML = '';
 
-            // Fake doctor data with appointment slots
+            // Affordable doctor data with appointment slots
             const doctors = [
                 {
                     name: "Dr. Sarah Johnson",
                     specialty: "General Dentistry",
                     rating: "⭐⭐⭐⭐⭐",
-                    price: "$1,200",
+                    price: "$450",
                     location: "Downtown Clinic",
                     distance: "2.3 miles",
                     appointments: [
@@ -916,7 +940,7 @@
                     name: "Dr. Michael Chen",
                     specialty: "Restorative Dentistry",
                     rating: "⭐⭐⭐⭐",
-                    price: "$1,100",
+                    price: "$380",
                     location: "Westside Dental",
                     distance: "3.1 miles",
                     appointments: [
@@ -927,9 +951,9 @@
                 },
                 {
                     name: "Dr. Emily Rodriguez",
-                    specialty: "Cosmetic Dentistry",
+                    specialty: "Family Dentistry",
                     rating: "⭐⭐⭐⭐⭐",
-                    price: "$1,350",
+                    price: "$520",
                     location: "Smile Center",
                     distance: "1.8 miles",
                     appointments: [
@@ -940,9 +964,9 @@
                 },
                 {
                     name: "Dr. David Park",
-                    specialty: "Family Dentistry",
+                    specialty: "Community Dentistry",
                     rating: "⭐⭐⭐⭐",
-                    price: "$950",
+                    price: "$320",
                     location: "Community Dental",
                     distance: "4.2 miles",
                     appointments: [

@@ -686,9 +686,9 @@ def analyze():
                 "cls": "caries"
             })
         
-        # Convert overlay to base64 for web display
+        # Convert original image to base64 for web display (no red boxes)
         buffer = io.BytesIO()
-        overlay.save(buffer, format='PNG')
+        img.save(buffer, format='PNG')
         img_str = base64.b64encode(buffer.getvalue()).decode()
         
         # Generate report

@@ -1,6 +1,6 @@
-# 🦷 AI Dental Exam - Cavity Detection & Insurance
+# 🦷 AI Dental Exam - Complete Doctor & Patient Portal
 
-A hackathon prototype that uses AI to analyze dental X-ray images, detect cavities, and provide insurance cost estimates.
+A comprehensive hackathon prototype featuring AI-powered dental X-ray analysis, patient portals, insurance pricing, and doctor networks with appointment booking.
 
 ⚠️ **Disclaimer**: This is a prototype for educational/demo purposes only — not a medical device and not intended for clinical diagnosis.
 
@@ -11,71 +11,125 @@ A hackathon prototype that uses AI to analyze dental X-ray images, detect caviti
    pip install -r requirements.txt
    ```
 
-2. **Run the app**:
+2. **Run the Flask app**:
    ```bash
-   python app.py
+   python3 flask_app.py
    ```
 
-3. **Open your browser** to the URL shown in the terminal (usually `http://127.0.0.1:7860`)
+3. **Open your browser** to: `http://127.0.0.1:8080`
 
-## ✨ Features
+## ✨ Complete Features
 
-- **AI Detection**: Uses YOLOv8 with mock fallback to detect cavities
-- **Tooth Numbering**: Maps detections to tooth IDs using Universal (1-32) or FDI notation
-- **Visual Overlay**: Draws red bounding boxes with tooth numbers and confidence scores
-- **Insurance Pricing**: Mock insurance plans with cost estimates
-- **Patient Assistant**: Friendly messages explaining findings to patients
-- **JSON Output**: Structured data for integration with other systems
+### 🏥 Doctor Interface
+- **Clean X-ray Analysis**: Upload and analyze X-rays without distracting red boxes
+- **Patient Information**: Comprehensive patient data collection (name, age, medical history, insurance)
+- **Communication Options**: Email and SMS notifications to patients
+- **Patient Portal Links**: Generate shareable links for patient access
+
+### 👤 Patient Portal
+- **Personalized Welcome**: Customized greeting with visit summary
+- **AI Chat Assistant**: Educational AI responses about dental health and findings
+- **Insurance Pricing**: Dynamic cost estimates based on actual detection results
+- **Doctor Network**: Find alternative providers with competitive pricing
+- **Appointment Booking**: Schedule appointments with available doctors
+
+### 🤖 AI & Detection
+- **YOLOv8 Integration**: Real cavity detection with mock fallback
+- **Clean Image Display**: Professional X-ray presentation without overlay boxes
+- **Confidence Scoring**: High/Medium/Low confidence levels for findings
+- **Educational Responses**: Informative AI explanations about dental health
+
+### 💰 Insurance & Pricing
+- **Dynamic Pricing**: Treatment costs based on actual cavity detection
+- **Insurance Integration**: Multiple provider support (Blue Cross, Aetna, Cigna, etc.)
+- **Affordable Care**: Competitive pricing for alternative providers
+- **Treatment Recommendations**: Filling, crown, root canal, extraction options
 
 ## 🏗️ Architecture
 
+### Core Files
+- `flask_app.py`: Main Flask application with all routes
 - `src/detect.py`: YOLO detection with mock fallback
 - `src/tooth_numbering.py`: Tooth ID mapping (Universal/FDI)
-- `src/postprocess.py`: Image overlay and formatting
+- `src/postprocess.py`: Image processing and formatting
 - `src/insurance.py`: Mock insurance plans and pricing
-- `app.py`: Gradio web interface
 
-## 📊 Demo Flow
+### Templates
+- `templates/doctor_interface.html`: Doctor's X-ray upload and patient management
+- `templates/patient_portal.html`: Patient's personalized results and AI chat
 
-1. Upload an X-ray image
-2. Select tooth notation system (Universal/FDI)
-3. Choose insurance plan
-4. Click "Analyze X-ray"
-5. View results:
-   - Annotated image with red boxes
-   - Dentist report
-   - JSON detections
-   - Patient message
-   - Insurance pricing
+### Configuration
+- `.env`: Environment variables for API keys and credentials
+- `requirements.txt`: Python dependencies
+
+## 📊 Complete Demo Flow
+
+### 🏥 Doctor Side
+1. **Upload X-ray** and enter patient information
+2. **Select communication** (email/SMS) options
+3. **Analyze X-ray** → Clean image display with text-based findings
+4. **Share patient portal link** with patient
+5. **Monitor communication status** (sent/not configured)
+
+### 👤 Patient Side
+1. **Receive personalized welcome** with visit summary
+2. **View analysis results** and patient information
+3. **Chat with AI** about findings and treatments
+4. **Get insurance pricing** based on actual detections
+5. **Find alternative doctors** with appointment booking
+6. **Schedule appointments** with competitive pricing
+
+## 🎨 Modern UI Features
+
+- **Maroon & White Theme**: Professional medical aesthetic
+- **Floating Effects**: Subtle animations on doctor interface
+- **Glass Morphism**: Modern container design with backdrop blur
+- **Responsive Design**: Works on desktop and mobile
+- **Clean Typography**: Professional medical interface
 
 ## 🔧 Technical Details
 
-- **Mock Mode**: Works without YOLO weights for demo purposes
-- **Tooth Mapping**: 2x16 grid system for 32 teeth
-- **Surface Detection**: MO/DO/BO/LO region mapping
-- **Insurance Plans**: 5 mock plans with different coverage rates
-- **CDT Codes**: Standard dental procedure codes for billing
+- **Flask Web Framework**: Robust Python web application
+- **OpenAI Integration**: AI chat with personalized responses
+- **Email/SMS Support**: Patient communication (configurable)
+- **Mock Data**: Realistic demo data for insurance and doctors
+- **Patient Portals**: Unique URLs for each patient's results
+- **Appointment System**: Mock booking with available time slots
 
-## 📝 Example Output
+## 📱 Communication Setup
 
-```json
-{
-  "findings": [
-    {
-      "tooth_id": 30,
-      "region": "MO", 
-      "conf": 0.82,
-      "bbox": [100, 200, 150, 250],
-      "cls": "caries"
-    }
-  ]
-}
+### Email Configuration
+```bash
+# Add to .env file
+EMAIL_USERNAME=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+EMAIL_SMTP_SERVER=smtp.gmail.com
+EMAIL_SMTP_PORT=587
 ```
 
-## 🎯 Hackathon Demo
+### SMS Configuration (Optional)
+```bash
+# Add to .env file
+TWILIO_ACCOUNT_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_token
+TWILIO_PHONE_NUMBER=your_twilio_number
+```
+
+## 🎯 Hackathon Demo Highlights
 
 This prototype demonstrates:
-- AI-powered medical image analysis
-- Integration with insurance systems
-- Patient-friendly interfaces
-- Clinical workflow automation
+- **End-to-end workflow**: Doctor analysis → Patient portal → AI chat → Insurance pricing
+- **AI-powered analysis**: Real cavity detection with educational explanations
+- **Patient engagement**: Personalized portals with AI assistance
+- **Healthcare economics**: Insurance integration and competitive pricing
+- **Modern UX**: Professional medical interface with smooth animations
+- **Scalable architecture**: Flask backend with modular components
+
+## 🚀 Demo Instructions
+
+1. **Start the app**: `python3 flask_app.py`
+2. **Doctor workflow**: Upload X-ray → Enter patient info → Analyze → Share portal link
+3. **Patient workflow**: Access portal → Chat with AI → Get pricing → Book appointments
+4. **Show features**: Insurance pricing, doctor network, appointment booking
+
+Perfect for healthcare hackathons, AI demos, and medical technology presentations! 🏆
