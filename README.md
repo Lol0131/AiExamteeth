@@ -1,10 +1,10 @@
-# 🦷 AI Dental Exam - Complete Doctor & Patient Portal
+# AI Dental Exam - Complete Doctor & Patient Portal
 
 A comprehensive hackathon prototype featuring AI-powered dental X-ray analysis, patient portals, insurance pricing, and doctor networks with appointment booking.
 
-⚠️ **Disclaimer**: This is a prototype for educational/demo purposes only — not a medical device and not intended for clinical diagnosis.
+**Disclaimer**: This is a prototype for educational/demo purposes only — not a medical device and not intended for clinical diagnosis.
 
-## 🚀 Quick Start
+## Quick Start
 
 1. **Install dependencies**:
    ```bash
@@ -18,34 +18,34 @@ A comprehensive hackathon prototype featuring AI-powered dental X-ray analysis, 
 
 3. **Open your browser** to: `http://127.0.0.1:8080`
 
-## ✨ Complete Features
+##Complete Features
 
-### 🏥 Doctor Interface
+### Doctor Interface
 - **Clean X-ray Analysis**: Upload and analyze X-rays without distracting red boxes
 - **Patient Information**: Comprehensive patient data collection (name, age, medical history, insurance)
 - **Communication Options**: Email and SMS notifications to patients
 - **Patient Portal Links**: Generate shareable links for patient access
 
-### 👤 Patient Portal
+### Patient Portal
 - **Personalized Welcome**: Customized greeting with visit summary
 - **AI Chat Assistant**: Educational AI responses about dental health and findings
 - **Insurance Pricing**: Dynamic cost estimates based on actual detection results
 - **Doctor Network**: Find alternative providers with competitive pricing
 - **Appointment Booking**: Schedule appointments with available doctors
 
-### 🤖 AI & Detection
+### AI & Detection
 - **YOLOv8 Integration**: Real cavity detection with mock fallback
 - **Clean Image Display**: Professional X-ray presentation without overlay boxes
 - **Confidence Scoring**: High/Medium/Low confidence levels for findings
 - **Educational Responses**: Informative AI explanations about dental health
 
-### 💰 Insurance & Pricing
+### Insurance & Pricing
 - **Dynamic Pricing**: Treatment costs based on actual cavity detection
 - **Insurance Integration**: Multiple provider support (Blue Cross, Aetna, Cigna, etc.)
 - **Affordable Care**: Competitive pricing for alternative providers
 - **Treatment Recommendations**: Filling, crown, root canal, extraction options
 
-## 🏗️ Architecture
+## Architecture
 
 ### Core Files
 - `flask_app.py`: Main Flask application with all routes
@@ -62,16 +62,15 @@ A comprehensive hackathon prototype featuring AI-powered dental X-ray analysis, 
 - `.env`: Environment variables for API keys and credentials
 - `requirements.txt`: Python dependencies
 
-## 📊 Complete Demo Flow
+## Complete Demo Flow
 
-### 🏥 Doctor Side
+### Doctor Side
 1. **Upload X-ray** and enter patient information
 2. **Select communication** (email/SMS) options
 3. **Analyze X-ray** → Clean image display with text-based findings
 4. **Share patient portal link** with patient
 5. **Monitor communication status** (sent/not configured)
-
-### 👤 Patient Side
+### Patient Side
 1. **Receive personalized welcome** with visit summary
 2. **View analysis results** and patient information
 3. **Chat with AI** about findings and treatments
@@ -79,7 +78,7 @@ A comprehensive hackathon prototype featuring AI-powered dental X-ray analysis, 
 5. **Find alternative doctors** with appointment booking
 6. **Schedule appointments** with competitive pricing
 
-## 🎨 Modern UI Features
+## Modern UI Features
 
 - **Maroon & White Theme**: Professional medical aesthetic
 - **Floating Effects**: Subtle animations on doctor interface
@@ -87,7 +86,7 @@ A comprehensive hackathon prototype featuring AI-powered dental X-ray analysis, 
 - **Responsive Design**: Works on desktop and mobile
 - **Clean Typography**: Professional medical interface
 
-## 🔧 Technical Details
+## Technical Details
 
 - **Flask Web Framework**: Robust Python web application
 - **OpenAI Integration**: AI chat with personalized responses
@@ -96,7 +95,7 @@ A comprehensive hackathon prototype featuring AI-powered dental X-ray analysis, 
 - **Patient Portals**: Unique URLs for each patient's results
 - **Appointment System**: Mock booking with available time slots
 
-## 📱 Communication Setup
+## Communication Setup
 
 ### Email Configuration
 ```bash
@@ -115,7 +114,7 @@ TWILIO_AUTH_TOKEN=your_twilio_token
 TWILIO_PHONE_NUMBER=your_twilio_number
 ```
 
-## 🎯 Hackathon Demo Highlights
+## Hackathon Demo Highlights
 
 This prototype demonstrates:
 - **End-to-end workflow**: Doctor analysis → Patient portal → AI chat → Insurance pricing
@@ -125,7 +124,7 @@ This prototype demonstrates:
 - **Modern UX**: Professional medical interface with smooth animations
 - **Scalable architecture**: Flask backend with modular components
 
-## 🚀 Demo Instructions
+## Demo Instructions
 
 1. **Start the app**: `python3 flask_app.py`
 2. **Doctor workflow**: Upload X-ray → Enter patient info → Analyze → Share portal link
