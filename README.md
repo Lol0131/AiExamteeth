@@ -131,4 +131,4 @@ This prototype demonstrates:
 3. **Patient workflow**: Access portal → Chat with AI → Get pricing → Book appointments
 4. **Show features**: Insurance pricing, doctor network, appointment booking
 
-Perfect for healthcare hackathons, AI demos, and medical technology presentations! 🏆
+Perfect for healthcare hackathons, AI demos, and medical technology presentations! 
